@@ -17,7 +17,10 @@ function fetchData() {
     var queryString = 'keyID=' + config.keyID + '&vCode=' + config.vCode;
 
     request.get({
-        headers: {'content-type' : 'application/x-www-form-urlencoded'},
+        headers: {
+            'content-type' : 'application/x-www-form-urlencoded',
+            'User-Agent': 'eve-calendar-slack-reminders'
+        },
         baseUrl: baseURL,
         url: calendarURL,
         body: queryString
