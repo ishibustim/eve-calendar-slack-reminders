@@ -1,8 +1,6 @@
 var request = require('request');
 var xml2js = require('xml2js');
-var util = require('util');
 var config = require('./config.js');
-//request.debug = true;
 
 var events = [];
 
