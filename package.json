@@ -1,0 +1,33 @@
+{
+  "name": "eve-calendar-slack-reminders",
+  "version": "1.0.0",
+  "description": "Post reminders about Eve calendar events to a Slack channel.",
+  "main": "eve-reminders.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node eve-reminders.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ishibustim/eve-calendar-slack-reminders.git"
+  },
+  "keywords": [
+    "eve",
+    "eve",
+    "online",
+    "eveonline",
+    "slack",
+    "calendar",
+    "reminder"
+  ],
+  "author": "Randy Ehret",
+  "license": "(MIT)",
+  "bugs": {
+    "url": "https://github.com/ishibustim/eve-calendar-slack-reminders/issues"
+  },
+  "homepage": "https://github.com/ishibustim/eve-calendar-slack-reminders#readme",
+  "dependencies": {
+    "request": "^2.72.0",
+    "xml2js": "^0.4.16"
+  }
+}
