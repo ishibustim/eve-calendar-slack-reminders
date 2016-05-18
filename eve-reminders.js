@@ -29,15 +29,17 @@ function fetchData() {
     });//end post
 }
 function processData(data) {
-    data.eveapi.result.forEach(function(result) {
-        result.rowset.forEach(function(rowset) {
-            if (rowset.$.name === 'upcomingEvents') {
-                rowset.row.forEach(function(row) {
-                    addEventToList(row.$);
-                });
-            }//end if
+    if (data.eveapi.result) {
+        data.eveapi.result.forEach(function(result) {
+            result.rowset.forEach(function(rowset) {
+                if (rowset.$.name === 'upcomingEvents') {
+                    rowset.row.forEach(function(row) {
+                        addEventToList(row.$);
+                    });
+                }//end if
+            });
         });
-    });
+    }//end if
 
     // Set up timeout to fetch data when cache expires
     var currentDate = new Date(data.eveapi.currentTime);
