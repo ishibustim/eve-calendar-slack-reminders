@@ -1,6 +1,9 @@
+/*jshint esversion: 6*/
+
 var request = require('request');
 var xml2js = require('xml2js');
 var config = require('./config.js');
+var colors = require('./colors.js');
 
 var events = [];
 
@@ -8,7 +11,7 @@ var events = [];
 fetchData();
 
 function fetchData() {
-    console.log('Refreshing data...');
+    console.log(getDateLogString(new Date(), colors.FgGreen) + ' Refreshing data...');
     var baseURL = 'https://api.eveonline.com';
     var calendarURL = '/char/UpcomingCalendarEvents.xml.aspx';
 
@@ -27,7 +30,14 @@ function fetchData() {
             processData(result);
         });//end parseString
     });//end post
-}
+}//end fetchData
+
+function getDateLogString(dateObj, dateColor) {
+    var dateString = dateObj.toLocaleDateString();
+    var timeString = dateObj.toLocaleTimeString();
+    return `${dateColor}[${dateString} ${timeString}]${colors.Reset}`;
+}//end getDateLogString
+
 function processData(data) {
     if (data.eveapi.result) {
         data.eveapi.result.forEach(function(result) {
@@ -47,7 +57,15 @@ function processData(data) {
     var timeout = expireDate.getTime() - currentDate.getTime();
     // delay timeout by a minute to ensure cache is refreshed
     timeout += 1 * 60 * 1000;
-    console.log('Scheduled refresh in ' + (timeout / 1000.0 / 60.0) + ' minutes');
+
+    // Generate time string for refresh. The hours (and hour divider) will be hidden if timeout < 1 hour
+    var timeoutAsDate = new Date(timeout);
+    var timeoutHours = (timeoutAsDate.getUTCHours() === 0) ? '' : timeoutAsDate.getUTCHours();
+    var timeoutMinutes = (timeoutAsDate.getUTCMinutes() < 10) ? '0' + timeoutAsDate.getUTCMinutes() : timeoutAsDate.getUTCMinutes();
+    var timeoutSeconds = (timeoutAsDate.getUTCSeconds() < 10) ? '0' + timeoutAsDate.getUTCSeconds() : timeoutAsDate.getUTCSeconds();
+    var hourDivider = (timeoutHours === '') ? '' : ':';
+
+    console.log(getDateLogString(new Date(), colors.FgGreen) + ` Scheduled refresh in ${timeoutHours}${hourDivider}${timeoutMinutes}:${timeoutSeconds}`);
 
     setTimeout(function() {
         fetchData();
@@ -100,6 +118,8 @@ function postReminder(msg) {
         username: 'EveCalendar',
         text: msg
     };
+
+    console.log(getDateLogString(new Date(), colors.Dim) + ' Posting reminder to Slack');
 
     request.post({
         url: config.slackWebhookURL,
