@@ -41,13 +41,15 @@ function getDateLogString(dateObj, dateColor) {
 function processData(data) {
     if (data.eveapi.result) {
         data.eveapi.result.forEach(function(result) {
-            result.rowset.forEach(function(rowset) {
-                if (rowset.$.name === 'upcomingEvents') {
-                    rowset.row.forEach(function(row) {
-                        addEventToList(row.$);
-                    });
-                }//end if
-            });
+            if (result.rowset) {
+                result.rowset.forEach(function(rowset) {
+                    if (rowset.$.name === 'upcomingEvents' && rowset.row) {
+                        rowset.row.forEach(function(row) {
+                            addEventToList(row.$);
+                        });
+                    }//end if
+                });
+            }//end if
         });
     }//end if
 
